@@ -1,109 +1,82 @@
 export interface EnglishVocabularyItem {
   word: string;
-  phonetic?: string;
-  partOfSpeech: string;
-  meaningKh: string;
-  exampleSentence: string;
-  exampleTranslationKh: string;
+  phonetic: string;
+  pos: string;
+  khmerMeaning: string;
+  example: string;
+  icon: string;
+  // Compatibility fields
+  partOfSpeech?: string;
+  meaningKh?: string;
+  exampleSentence?: string;
+  exampleTranslationKh?: string;
   audioPrompt?: string;
 }
 
-export interface ConversationLine {
+export interface EnglishConversationLine {
+  avatar: string;
   speaker: string;
   text: string;
-  translationKh: string;
-  avatar: string;
+  translation: string;
 }
 
-export interface ConversationBlock {
+export interface EnglishConversation {
   title?: string;
-  lines: ConversationLine[];
+  lines: EnglishConversationLine[];
 }
 
-export interface GrammarExample {
+export interface EnglishLanguageFocusExample {
   question?: string;
   answer: string;
   note?: string;
 }
 
-export interface GrammarPracticeExercise {
-  instruction: string;
-  prompt: string;
+export interface EnglishLanguageFocusExercise {
+  question: string;
+  options: string[];
+  answer: string;
+}
+
+export interface EnglishLanguageFocus {
+  grammarTopic: string;
+  rule: string;
+  formula?: string;
+  examples: EnglishLanguageFocusExample[];
+  practiceExercises: EnglishLanguageFocusExercise[];
+}
+
+export interface EnglishReadingQuestion {
+  question: string;
   options?: string[];
   answer: string;
 }
 
-export interface LanguageFocusSection {
-  grammarTopic: string;
-  rule: string;
-  formula?: string;
-  examples: GrammarExample[];
-  practiceExercises: GrammarPracticeExercise[];
-}
-
-export interface ReadingQuestion {
-  question: string;
-  options: string[];
-  answer: string;
-  explanation: string;
-}
-
-export interface ReadingSection {
+export interface EnglishReading {
   title: string;
   passage: string;
-  questions: ReadingQuestion[];
+  questions: EnglishReadingQuestion[];
 }
 
-export interface SpeakingSection {
+export interface EnglishSpeaking {
   instruction: string;
-  modelDialogue: { speaker: string; text: string; translationKh: string }[];
+  modelDialogue: { speaker: string; text: string }[];
   prompts: string[];
 }
 
-export interface WritingTask {
+export interface EnglishWritingTask {
   prompt: string;
   answer: string;
 }
 
-export interface WritingSection {
+export interface EnglishWriting {
   instruction: string;
   wordBank?: string[];
-  tasks: WritingTask[];
+  tasks: EnglishWritingTask[];
 }
 
-export interface RememberSection {
+export interface EnglishRemember {
   vocabList: string[];
   grammarSummary: string;
-}
-
-export interface EnglishLessonUnit {
-  id: number;
-  unitNumber: number;
-  chapterId: number;
-  chapterTitle: string;
-  unitTitle: string;
-  titleEn: string;
-  titleKh: string;
-  subtitleKh: string;
-  pages: string;
-  icon: string;
-  grammarFocusEn: string;
-  grammarFocusKh: string;
-  spellingWords: string[];
-  vocabulary: EnglishVocabularyItem[];
-  conversations: ConversationBlock[];
-  dialogueEn: { speaker: string; text: string; translationKh: string }[];
-  languageFocus: LanguageFocusSection;
-  reading: ReadingSection;
-  speaking: SpeakingSection;
-  writing: WritingSection;
-  remember: RememberSection;
-  practiceQuestions: {
-    question: string;
-    options: string[];
-    correctIndex: number;
-    explanationKh: string;
-  }[];
 }
 
 export interface EnglishChapter {
@@ -114,11 +87,43 @@ export interface EnglishChapter {
   colorTheme: string;
 }
 
+export interface EnglishLessonUnit {
+  id: number;
+  unitNumber: number;
+  chapterId: number;
+  chapterTitle: string;
+  unitTitle: string;
+  pages: string;
+  icon: string;
+  vocabulary: EnglishVocabularyItem[];
+  spellingWords: string[];
+  conversations: EnglishConversation[];
+  languageFocus: EnglishLanguageFocus;
+  reading: EnglishReading;
+  speaking: EnglishSpeaking;
+  writing: EnglishWriting;
+  remember: EnglishRemember;
+
+  // Compatibility fields
+  titleEn?: string;
+  titleKh?: string;
+  subtitleKh?: string;
+  grammarFocusEn?: string;
+  grammarFocusKh?: string;
+  dialogueEn?: { speaker: string; text: string; translationKh: string }[];
+  practiceQuestions?: {
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanationKh: string;
+  }[];
+}
+
 export const ENGLISH_GRADE_6_CHAPTERS: EnglishChapter[] = [
   { id: 1, titleEn: 'Chapter 1: Back to School & Friends', titleKh: 'ជំពូកទី១ ៖ ត្រឡប់មកសាលា និងមិត្តភក្តិ', unitsCount: 3, colorTheme: 'indigo' },
-  { id: 2, titleEn: 'Chapter 2: Daily Routines & Hobbies', titleKh: 'ជំពូកទី២ ៖ ទម្លាប់ប្រចាំថ្ងៃ និងចំណង់ចំណូលចិត្ត', unitsCount: 3, colorTheme: 'emerald' },
-  { id: 3, titleEn: 'Chapter 3: Food, Health & Nutrition', titleKh: 'ជំពូកទី៣ ៖ អាហារ សុខភាព និងអាហារូបត្ថម្ភ', unitsCount: 3, colorTheme: 'amber' },
-  { id: 4, titleEn: 'Chapter 4: Nature, Weather & Seasons', titleKh: 'ជំពូកទី៤ ៖ ធម្មជាតិ អាកាសធាតុ និងរដូវកាល', unitsCount: 3, colorTheme: 'sky' },
+  { id: 2, titleEn: 'Chapter 2: Daily Routines & Hobbies', titleKh: 'ជំពូកទី២ ៖ ទម្លាប់ប្រចាំថ្ងៃ និងចំណង់ចំណូលចិត្ត', unitsCount: 2, colorTheme: 'emerald' },
+  { id: 3, titleEn: 'Chapter 3: Food, Health & Body', titleKh: 'ជំពូកទី៣ ៖ រាងកាយ និងសុខភាព', unitsCount: 1, colorTheme: 'amber' },
+  { id: 4, titleEn: 'Chapter 4: Nature & Folk Tales', titleKh: 'ជំពូកទី៤ ៖ ធម្មជាតិ និងរឿងព្រេង', unitsCount: 1, colorTheme: 'sky' },
 ];
 
 export const ENGLISH_GRADE_6_UNITS: EnglishLessonUnit[] = [
@@ -128,340 +133,518 @@ export const ENGLISH_GRADE_6_UNITS: EnglishLessonUnit[] = [
     chapterId: 1,
     chapterTitle: 'Chapter 1: Back to School & Friends',
     unitTitle: 'Meeting New Classmates',
+    pages: 'MoEYS p. 2-5',
+    icon: '🤝',
     titleEn: 'Unit 1: Meeting New Classmates',
     titleKh: 'មេរៀនទី១ ៖ ជួបមិត្តរួមថ្នាក់ថ្មី',
     subtitleKh: 'ការស្វាគមន៍ និងការណែនាំខ្លួនឯងជាភាសាអង់គ្លេស',
-    pages: 'ទំព័រ ៦-១១',
-    icon: '🎒',
     grammarFocusEn: 'Present Simple tense (Verb to be: am, is, are)',
     grammarFocusKh: 'កិរិយាសព្ទ To Be ក្នុងបច្ចុប្បន្នកាលធម្មតា',
-    spellingWords: ['Classmate', 'Welcome', 'Introduce', 'Student', 'Teacher', 'Friend'],
     vocabulary: [
-      { word: 'Classmate', phonetic: '/ˈklɑːsmeɪt/', partOfSpeech: 'noun', meaningKh: 'មិត្តរួមថ្នាក់', exampleSentence: 'Thida is my friendly classmate.', exampleTranslationKh: 'ធីតាគឺជាមិត្តរួមថ្នាក់រួសរាយរបស់ខ្ញុំ។' },
-      { word: 'Welcome', phonetic: '/ˈwelkəm/', partOfSpeech: 'verb/noun', meaningKh: 'ស្វាគមន៍', exampleSentence: 'Welcome to our school!', exampleTranslationKh: 'សូមស្វាគមន៍មកកាន់សាលារបស់ពួកយើង!' },
-      { word: 'Introduce', phonetic: '/ˌɪntrəˈdjuːs/', partOfSpeech: 'verb', meaningKh: 'ណែនាំ (ខ្លួន/អ្នកដទៃ)', exampleSentence: 'Please introduce yourself to the class.', exampleTranslationKh: 'សូមណែនាំខ្លួនរបស់អ្នកដល់ថ្នាក់រៀន។' },
-      { word: 'Student', phonetic: '/ˈstjuːdnt/', partOfSpeech: 'noun', meaningKh: 'សិស្ស', exampleSentence: 'We are Grade 6 students.', exampleTranslationKh: 'ពួកយើងជាសិស្សថ្នាក់ទី ៦។' },
-      { word: 'Friendly', phonetic: '/ˈfrendli/', partOfSpeech: 'adj', meaningKh: 'រួសរាយរាក់ទាក់', exampleSentence: 'Our teacher is very friendly.', exampleTranslationKh: 'លោកគ្រូអ្នកគ្រូរបស់យើងរួសរាយណាស់។' },
+      {
+        word: 'Classmate',
+        phonetic: '/ˈklɑːsmeɪt/',
+        pos: 'noun',
+        khmerMeaning: 'មិត្តរួមថ្នាក់',
+        example: 'Thida is my friendly classmate.',
+        icon: '🧑‍🤝‍🧑',
+        partOfSpeech: 'noun',
+        meaningKh: 'មិត្តរួមថ្នាក់',
+        exampleSentence: 'Thida is my friendly classmate.',
+        exampleTranslationKh: 'ធីតាគឺជាមិត្តរួមថ្នាក់រួសរាយរបស់ខ្ញុំ។'
+      },
+      {
+        word: 'Welcome',
+        phonetic: '/ˈwelkəm/',
+        pos: 'verb',
+        khmerMeaning: 'ស្វាគមន៍',
+        example: 'Welcome to our Grade 6 class!',
+        icon: '👋',
+        partOfSpeech: 'verb',
+        meaningKh: 'ស្វាគមន៍',
+        exampleSentence: 'Welcome to our Grade 6 class!',
+        exampleTranslationKh: 'សូមស្វាគមន៍មកកាន់ថ្នាក់ទី៦ របស់យើង!'
+      },
+      {
+        word: 'Introduce',
+        phonetic: '/ˌɪntrəˈdjuːs/',
+        pos: 'verb',
+        khmerMeaning: 'ណែនាំខ្លួន / ណែនាំ',
+        example: 'Please introduce yourself to everyone.',
+        icon: '🎤',
+        partOfSpeech: 'verb',
+        meaningKh: 'ណែនាំខ្លួន',
+        exampleSentence: 'Please introduce yourself to everyone.',
+        exampleTranslationKh: 'សូមណែនាំខ្លួនរបស់អ្នកដល់អ្នកទាំងអស់គ្នា។'
+      },
+      {
+        word: 'Friendly',
+        phonetic: '/ˈfrendli/',
+        pos: 'adj',
+        khmerMeaning: 'រួសរាយ រាក់ទាក់',
+        example: 'Our teacher is very friendly.',
+        icon: '😊',
+        partOfSpeech: 'adjective',
+        meaningKh: 'រួសរាយ',
+        exampleSentence: 'Our teacher is very friendly.',
+        exampleTranslationKh: 'លោកគ្រូអ្នកគ្រូរបស់យើងរួសរាយណាស់។'
+      },
+      {
+        word: 'Together',
+        phonetic: '/təˈɡeðər/',
+        pos: 'adv',
+        khmerMeaning: 'ជាមួយគ្នា',
+        example: 'We study English together every morning.',
+        icon: '📚',
+        partOfSpeech: 'adverb',
+        meaningKh: 'ជាមួយគ្នា',
+        exampleSentence: 'We study English together every morning.',
+        exampleTranslationKh: 'ពួកយើងរៀនភាសាអង់គ្លេសជាមួយគ្នាជារៀងរាល់ព្រឹក។'
+      }
     ],
+    spellingWords: ['Classmate', 'Welcome', 'Introduce', 'Friendly', 'Together'],
     conversations: [
       {
-        title: 'Greeting and Introductions',
+        title: 'Meeting in the Classroom',
         lines: [
-          { speaker: 'Sokha', text: 'Hello! My name is Sokha. What is your name?', translationKh: 'សួស្តី! ខ្ញុំឈ្មោះសុខា។ តើអ្នកឈ្មោះអ្វី?', avatar: '👦' },
-          { speaker: 'Thida', text: 'Hi Sokha! I am Thida. Nice to meet you.', translationKh: 'សួស្តីសុខា! ខ្ញុំឈ្មោះធីតា។ រីករាយដែលបានស្គាល់អ្នក។', avatar: '👧' },
-          { speaker: 'Sokha', text: 'Nice to meet you too! Which grade are you in?', translationKh: 'រីករាយដែលបានស្គាល់អ្នកដូចគ្នា! តើអ្នករៀនថ្នាក់ទីប៉ុន្មាន?', avatar: '👦' },
-          { speaker: 'Thida', text: 'I am in Grade 6A. We are classmates!', translationKh: 'ខ្ញុំរៀនថ្នាក់ទី ៦A។ ពួកយើងជាមិត្តរួមថ្នាក់នឹងគ្នា!', avatar: '👧' },
-        ],
-      },
-    ],
-    dialogueEn: [
-      { speaker: 'Sokha', text: 'Hello! My name is Sokha. What is your name?', translationKh: 'សួស្តី! ខ្ញុំឈ្មោះសុខា។ តើអ្នកឈ្មោះអ្វី?' },
-      { speaker: 'Thida', text: 'Hi Sokha! I am Thida. Nice to meet you.', translationKh: 'សួស្តីសុខា! ខ្ញុំឈ្មោះធីតា។ រីករាយដែលបានស្គាល់អ្នក។' },
-      { speaker: 'Sokha', text: 'Nice to meet you too! Which grade are you in?', translationKh: 'រីករាយដែលបានស្គាល់អ្នកដូចគ្នា! តើអ្នករៀនថ្នាក់ទីប៉ុន្មាន?' },
-      { speaker: 'Thida', text: 'I am in Grade 6A. We are classmates!', translationKh: 'ខ្ញុំរៀនថ្នាក់ទី ៦A។ ពួកយើងជាមិត្តរួមថ្នាក់នឹងគ្នា!' },
+          { avatar: '👦', speaker: 'Sokha', text: 'Good morning! My name is Sokha. What is your name?', translation: 'អរុណសួស្តី! ខ្ញុំឈ្មោះសុខា។ តើអ្នកឈ្មោះអ្វី?' },
+          { avatar: '👧', speaker: 'Thida', text: 'Hi Sokha! I am Thida. Nice to meet you.', translation: 'សួស្តីសុខា! ខ្ញុំឈ្មោះធីតា។ រីករាយដែលបានស្គាល់អ្នក។' },
+          { avatar: '👦', speaker: 'Sokha', text: 'Nice to meet you too! Are you in Grade 6A?', translation: 'រីករាយដែលបានស្គាល់អ្នកដូចគ្នា! តើអ្នករៀននៅថ្នាក់ទី ៦A មែនទេ?' },
+          { avatar: '👧', speaker: 'Thida', text: 'Yes, I am. We are classmates this year!', translation: 'ចាស ពិតមែនហើយ។ ពួកយើងជាមិត្តរួមថ្នាក់គ្នានៅឆ្នាំនេះ!' }
+        ]
+      }
     ],
     languageFocus: {
-      grammarTopic: 'Verb "to be" (am, is, are) in Present Simple',
-      rule: 'ប្រើ am ជាមួយ I, ប្រើ is ជាមួយ He/She/It (ឯកវចនៈ), និងប្រើ are ជាមួយ We/You/They (ពហុវចនៈ)។',
-      formula: 'Subject + am / is / are + Complement (Noun/Adjective)',
+      grammarTopic: 'Present Simple: Verb to be (am, is, are)',
+      rule: 'ប្រើ am ជាមួយ I, ប្រើ is ជាមួយ He/She/It/ឯកវចនៈ, ប្រើ are ជាមួយ You/We/They/ពហុវចនៈ។',
+      formula: 'Subject + am/is/are + (adjective / noun)',
       examples: [
-        { question: 'What is your name?', answer: 'My name is Dara.', note: 'Subject: My name (singular)' },
-        { question: 'Who are they?', answer: 'They are my new classmates.', note: 'Subject: They (plural)' },
-        { question: 'Are you in Grade 6?', answer: 'Yes, I am.', note: 'Short answer' },
+        { question: 'What is your name?', answer: 'I am Dara. (My name is Dara.)', note: 'I -> am' },
+        { question: 'Are you ready?', answer: 'Yes, we are ready.', note: 'We -> are' },
+        { question: 'Where is Thida?', answer: 'She is in the classroom.', note: 'She -> is' }
       ],
       practiceExercises: [
-        { instruction: 'Choose the correct form of "be"', prompt: 'I _____ very happy to meet you today.', options: ['am', 'is', 'are', 'be'], answer: 'am' },
-        { instruction: 'Choose the correct form of "be"', prompt: 'Sokha and Dara _____ good friends.', options: ['am', 'is', 'are', 'was'], answer: 'are' },
-        { instruction: 'Choose the correct form of "be"', prompt: 'She _____ our new English teacher.', options: ['am', 'is', 'are', 'be'], answer: 'is' },
-      ],
+        { question: 'Hello, I _____ a Grade 6 student.', options: ['am', 'is', 'are'], answer: 'am' },
+        { question: 'Sokha and Thida _____ good classmates.', options: ['is', 'are', 'am'], answer: 'are' },
+        { question: 'Mr. Vanna _____ our new English teacher.', options: ['is', 'are', 'am'], answer: 'is' }
+      ]
     },
     reading: {
-      title: 'Our First Day in Grade 6',
-      passage: 'Today is Monday. It is the first day of school. Sokha walks to school with his friends. The schoolyard is full of cheerful students. Sokha meets Thida near the flagpole. They are both in Grade 6A with Teacher Vanna. They feel excited to learn new English lessons together.',
+      title: 'Our New English Class',
+      passage: 'Today is Monday. It is the first day of the school year. Many students are in the classroom. Sokha meets Thida, and they become new friends. The teacher, Mr. Vanna, welcomes everyone with a big smile. He writes on the blackboard: "Welcome to Grade 6 English!" All the students are very happy to study together.',
       questions: [
-        { question: 'What day is it today?', options: ['Monday', 'Tuesday', 'Friday', 'Sunday'], answer: 'Monday', explanation: 'The text states: "Today is Monday. It is the first day of school."' },
-        { question: 'Who is their teacher in Grade 6A?', options: ['Teacher Vanna', 'Teacher Bopha', 'Teacher Dara', 'Teacher Sok'], answer: 'Teacher Vanna', explanation: 'They are with Teacher Vanna.' },
-        { question: 'Where does Sokha meet Thida?', options: ['Near the flagpole', 'In the library', 'At home', 'In the market'], answer: 'Near the flagpole', explanation: 'Sokha meets Thida near the flagpole.' },
-      ],
+        { question: 'What day is it today?', options: ['Monday', 'Sunday', 'Friday'], answer: 'Monday' },
+        { question: 'Who is the English teacher?', options: ['Mr. Vanna', 'Sokha', 'Thida'], answer: 'Mr. Vanna' },
+        { question: 'How do the students feel?', options: ['Happy to study', 'Tired', 'Sad'], answer: 'Happy to study' }
+      ]
     },
     speaking: {
-      instruction: 'អនុវត្តសន្ទនាជាមួយមិត្តរួមថ្នាក់ដើម្បីណែនាំខ្លួន និងសាកសួរឈ្មោះ',
+      instruction: 'Introduce yourself to your partner using the template below:',
       modelDialogue: [
-        { speaker: 'A', text: 'Hello, my name is Bopha. What is your name?', translationKh: 'សួស្តី ខ្ញុំឈ្មោះបុប្ផា។ តើអ្នកឈ្មោះអ្វី?' },
-        { speaker: 'B', text: 'Hi Bopha, I am Veasna. Nice to meet you.', translationKh: 'សួស្តីបុប្ផា ខ្ញុំឈ្មោះវាសនា។ រីករាយដែលបានស្គាល់។' },
+        { speaker: 'Student A', text: 'Hello! I am [Name]. I am 11 years old. I like reading books.' },
+        { speaker: 'Student B', text: 'Hi [Name]! Nice to meet you. I am [Name], and I like sports.' }
       ],
       prompts: [
-        'ណែនាំឈ្មោះ អាយុ និងថ្នាក់រៀនរបស់អ្នក',
-        'សួរមិត្តភក្តិអំពីមុខវិជ្ជាដែលគាត់ចូលចិត្ត',
-        'ស្វាគមន៍មិត្តភក្តិដែលទើបមកដល់ថ្នាក់រៀនថ្មី',
-      ],
+        'Say your name and your age.',
+        'Tell your friend your favorite school subject.',
+        'Ask your friend: "What is your favorite game?"'
+      ]
     },
     writing: {
-      instruction: 'បំពេញប្រយោគណែនាំខ្លួនជាភាសាអង់គ្លេស',
-      wordBank: ['student', 'grade', 'name', 'school', 'classmate'],
+      instruction: 'Complete the sentences using words from the box:',
+      wordBank: ['classmates', 'friendly', 'welcome', 'am', 'are'],
       tasks: [
-        { prompt: 'My _____ is Sokha.', answer: 'name' },
-        { prompt: 'I am a _____ at Samaki Primary School.', answer: 'student' },
-        { prompt: 'I study in _____ 6A.', answer: 'grade' },
-      ],
+        { prompt: 'I _____ very glad to meet you.', answer: 'am' },
+        { prompt: 'Sokha and Thida are good _____.', answer: 'classmates' },
+        { prompt: 'Our school extends a warm _____ to all students.', answer: 'welcome' }
+      ]
     },
     remember: {
-      vocabList: ['Classmate', 'Welcome', 'Introduce', 'Student', 'Friendly'],
-      grammarSummary: 'I am, He/She/It is, We/You/They are (Verb To Be in Present Simple)',
+      vocabList: ['Classmate', 'Welcome', 'Introduce', 'Friendly', 'Together'],
+      grammarSummary: 'I am / He is / She is / It is / We are / You are / They are'
     },
-    practiceQuestions: [
-      { question: 'Complete: "Hello, I _____ a Grade 6 student."', options: ['am', 'is', 'are', 'be'], correctIndex: 0, explanationKh: 'ប្រធាន "I" ត្រូវប្រើជាមួយកិរិយាសព្ទ "am"។' },
-      { question: 'Which word means "មិត្តរួមថ្នាក់"?', options: ['Teacher', 'Classmate', 'Principal', 'Doctor'], correctIndex: 1, explanationKh: '"Classmate" មានន័យថាមិត្តរួមថ្នាក់។' },
+    dialogueEn: [
+      { speaker: 'Sokha', text: 'Good morning! My name is Sokha.', translationKh: 'អរុណសួស្តី! ខ្ញុំឈ្មោះសុខា។' },
+      { speaker: 'Thida', text: 'Hi Sokha! I am Thida. Nice to meet you.', translationKh: 'សួស្តីសុខា! ខ្ញុំឈ្មោះធីតា។ រីករាយដែលបានស្គាល់អ្នក។' }
     ],
+    practiceQuestions: [
+      {
+        question: 'Complete: "Hello, I _____ a Grade 6 student."',
+        options: ['am', 'is', 'are', 'be'],
+        correctIndex: 0,
+        explanationKh: 'ប្រធាន "I" ត្រូវប្រើជាមួយកិរិយាសព្ទ "am"។'
+      },
+      {
+        question: 'Which word means "មិត្តរួមថ្នាក់"?',
+        options: ['Teacher', 'Classmate', 'Principal', 'Doctor'],
+        correctIndex: 1,
+        explanationKh: '"Classmate" មានន័យថាមិត្តរួមថ្នាក់។'
+      }
+    ]
   },
   {
     id: 2,
     unitNumber: 2,
     chapterId: 1,
     chapterTitle: 'Chapter 1: Back to School & Friends',
-    unitTitle: 'Telling the Time & School Supplies',
-    titleEn: 'Unit 2: Telling the Time & School Supplies',
-    titleKh: 'មេរៀនទី២ ៖ ការមើលម៉ោង និងសម្ភារសិក្សា',
-    subtitleKh: 'ការសួរសុខទុក្ខ ការមើលម៉ោង និងសម្ភារក្នុងថ្នាក់រៀន',
-    pages: 'ទំព័រ ១២-១៧',
+    unitTitle: 'Telling Time & Classroom Rules',
+    pages: 'MoEYS p. 6-9',
     icon: '⏰',
-    grammarFocusEn: 'Telling time ("What time is it?") & Prepositions of time (at, in, on)',
-    grammarFocusKh: 'ការប្រាប់ពេលវេលា និងធ្នាក់ At, In, On',
-    spellingWords: ['O\'clock', 'Quarter', 'Half', 'Textbook', 'Ruler', 'Pencil'],
+    titleEn: 'Unit 2: Telling Time & Classroom Rules',
+    titleKh: 'មេរៀនទី២ ៖ ប្រាប់ពេលវេលា និងវិន័យក្នុងថ្នាក់',
+    subtitleKh: 'ការសួរម៉ោង និងការប្រើប្រាស់ពាក្យបញ្ជាក្នុងថ្នាក់រៀន',
+    grammarFocusEn: 'Telling the time (What time is it? It is...) & Imperatives',
+    grammarFocusKh: 'ការប្រាប់ម៉ោង (It is...) និងល្បះបញ្ជា (Please / Don\'t)',
     vocabulary: [
-      { word: 'O\'clock', phonetic: '/əˈklɒk/', partOfSpeech: 'adv', meaningKh: 'ម៉ោងគត់', exampleSentence: 'It is seven o\'clock in the morning.', exampleTranslationKh: 'វាជាម៉ោង ៧ គត់នៅពេលព្រឹក។' },
-      { word: 'Textbook', phonetic: '/ˈtekstbʊk/', partOfSpeech: 'noun', meaningKh: 'សៀវភៅពុម្ព', exampleSentence: 'Open your English textbook to page 12.', exampleTranslationKh: 'បើកសៀវភៅពុម្ពភាសាអង់គ្លេសទំព័រទី ១២។' },
-      { word: 'Ruler', phonetic: '/ˈruːlə(r)/', partOfSpeech: 'noun', meaningKh: 'បន្ទាត់', exampleSentence: 'I draw straight lines with a ruler.', exampleTranslationKh: 'ខ្ញុំគូសបន្ទាត់ត្រង់ជាមួយបន្ទាត់។' },
-      { word: 'Quarter', phonetic: '/ˈkwɔːtə(r)/', partOfSpeech: 'noun', meaningKh: '១៥ នាទី (មួយភាគបួន)', exampleSentence: 'It is a quarter past seven.', exampleTranslationKh: 'ម៉ោង ៧ កន្លះដប់ប្រាំនាទី។' },
-      { word: 'Schedule', phonetic: '/ˈʃedjuːl/', partOfSpeech: 'noun', meaningKh: 'កាលវិភាគ', exampleSentence: 'Check our school timetable schedule.', exampleTranslationKh: 'ពិនិត្យមើលកាលវិភាគសាលារបស់យើង។' },
+      {
+        word: 'O\'clock',
+        phonetic: '/əˈklɒk/',
+        pos: 'adv',
+        khmerMeaning: 'ម៉ោងគត់',
+        example: 'School starts at seven o\'clock.',
+        icon: '🕒',
+        partOfSpeech: 'adverb',
+        meaningKh: 'ម៉ោងគត់',
+        exampleSentence: 'School starts at seven o\'clock.',
+        exampleTranslationKh: 'សាលារៀនចាប់ផ្តើមនៅម៉ោង ៧ គត់។'
+      },
+      {
+        word: 'Quiet',
+        phonetic: '/ˈkwaɪət/',
+        pos: 'adj',
+        khmerMeaning: 'ស្ងប់ស្ងាត់',
+        example: 'Please be quiet in the classroom.',
+        icon: '🤫',
+        partOfSpeech: 'adjective',
+        meaningKh: 'ស្ងប់ស្ងាត់',
+        exampleSentence: 'Please be quiet in the classroom.',
+        exampleTranslationKh: 'សូមរក្សាភាពស្ងប់ស្ងាត់ក្នុងថ្នាក់រៀន។'
+      },
+      {
+        word: 'Listen',
+        phonetic: '/ˈlɪsn/',
+        pos: 'verb',
+        khmerMeaning: 'ស្តាប់',
+        example: 'Listen carefully to the teacher.',
+        icon: '👂',
+        partOfSpeech: 'verb',
+        meaningKh: 'ស្តាប់',
+        exampleSentence: 'Listen carefully to the teacher.',
+        exampleTranslationKh: 'សូមស្តាប់លោកគ្រូអ្នកគ្រូដោយយកចិត្តទុកដាក់។'
+      },
+      {
+        word: 'Ruler',
+        phonetic: '/ˈruːlə(r)/',
+        pos: 'noun',
+        khmerMeaning: 'បន្ទាត់',
+        example: 'I use a ruler to draw straight lines.',
+        icon: '📏',
+        partOfSpeech: 'noun',
+        meaningKh: 'បន្ទាត់',
+        exampleSentence: 'I use a ruler to draw straight lines.',
+        exampleTranslationKh: 'ខ្ញុំប្រើបន្ទាត់ដើម្បីគូសបន្ទាត់ត្រង់។'
+      },
+      {
+        word: 'Textbook',
+        phonetic: '/ˈtekstbʊk/',
+        pos: 'noun',
+        khmerMeaning: 'សៀវភៅពុម្ព',
+        example: 'Please open your textbook to page 6.',
+        icon: '📖',
+        partOfSpeech: 'noun',
+        meaningKh: 'សៀវភៅពុម្ព',
+        exampleSentence: 'Please open your textbook to page 6.',
+        exampleTranslationKh: 'សូមបើកសៀវភៅពុម្ពរបស់អ្នកទៅទំព័រទី ៦។'
+      }
     ],
+    spellingWords: ['Oclock', 'Quiet', 'Listen', 'Ruler', 'Textbook'],
     conversations: [
       {
-        title: 'Asking the Time at School',
+        title: 'Asking the Time',
         lines: [
-          { speaker: 'Dara', text: 'Excuse me, Sokha. What time is it now?', translationKh: 'អធ្យាស្រ័យសុខា! តើឥឡូវនេះម៉ោងប៉ុន្មានហើយ?', avatar: '👦' },
-          { speaker: 'Sokha', text: 'It is seven o\'clock. School starts in fifteen minutes.', translationKh: 'ម៉ោង ៧ គត់ហើយ។ សាលានឹងចាប់ផ្តើមក្នុង ១៥ នាទីទៀត។', avatar: '🧒' },
-          { speaker: 'Dara', text: 'Thank you! Do you have a ruler in your bag?', translationKh: 'អរគុណ! តើអ្នកមានបន្ទាត់ក្នុងកាតាបទេ?', avatar: '👦' },
-          { speaker: 'Sokha', text: 'Yes, I do. Here you are.', translationKh: 'បាទ មាន។ នេះនែ៎។', avatar: '🧒' },
-        ],
-      },
-    ],
-    dialogueEn: [
-      { speaker: 'Dara', text: 'Excuse me, Sokha. What time is it now?', translationKh: 'អធ្យាស្រ័យសុខា! តើឥឡូវនេះម៉ោងប៉ុន្មានហើយ?' },
-      { speaker: 'Sokha', text: 'It is seven o\'clock. School starts in fifteen minutes.', translationKh: 'ម៉ោង ៧ គត់ហើយ។ សាលានឹងចាប់ផ្តើមក្នុង ១៥ នាទីទៀត។' },
+          { avatar: '👩‍🏫', speaker: 'Teacher', text: 'Good morning class! What time is it now?', translation: 'អរុណសួស្តីកូនៗ! តើឥឡូវនេះម៉ោងប៉ុន្មានហើយ?' },
+          { avatar: '👦', speaker: 'Dara', text: 'It is seven o\'clock, teacher.', translation: 'គឺម៉ោង ៧ គត់ហើយ លោកគ្រូ។' },
+          { avatar: '👩‍🏫', speaker: 'Teacher', text: 'Thank you Dara. Please open your books and listen.', translation: 'អរគុណដារ៉ា។ សូមបើកសៀវភៅកូនៗ ហើយស្តាប់។' }
+        ]
+      }
     ],
     languageFocus: {
-      grammarTopic: 'Asking and telling time (What time is it? It is...)',
-      rule: 'ប្រើ "What time is it?" ដើម្បីសួរម៉ោង និងឆ្លើយដោយ "It is + [ម៉ោង] + o\'clock / past / to"។ ប្រើធ្នាក់ "at" សម្រាប់ពេលវេលាជាក់លាក់។',
-      formula: 'What time is it? -> It is [time] | at + [exact time]',
+      grammarTopic: 'Telling Time & Imperatives (ល្បះបញ្ជា)',
+      rule: 'សួរម៉ោង ៖ "What time is it?" ឆ្លើយ ៖ "It is [hour] o\'clock."។ ល្បះបញ្ជាប្រើ Verb ដើម ៖ "Please listen", "Don\'t shout"។',
+      formula: 'What time is it? -> It is + [time]. / (Please) + Verb base form.',
       examples: [
-        { question: 'What time is it?', answer: 'It is 7:00 (seven o\'clock).', note: 'Exact hour' },
-        { question: 'When does class begin?', answer: 'Class begins at 7:30 a.m.', note: 'Preposition "at"' },
+        { question: 'What time is it?', answer: 'It is eight o\'clock.', note: '8:00' },
+        { question: 'What is the rule?', answer: 'Please raise your hand.', note: 'Polite command' },
+        { question: 'What should we not do?', answer: 'Don\'t run in class.', note: 'Negative command' }
       ],
       practiceExercises: [
-        { instruction: 'Choose the correct preposition', prompt: 'Our school bell rings _____ 7 o\'clock.', options: ['at', 'in', 'on', 'by'], answer: 'at' },
-        { instruction: 'Choose the correct response', prompt: 'What time is it? (7:30)', options: ['It is half past seven.', 'It is seven o\'clock.', 'It is quarter to seven.'], answer: 'It is half past seven.' },
-      ],
+        { question: 'What time is it? (7:00) -> It is _____ o\'clock.', options: ['seven', 'eight', 'nine'], answer: 'seven' },
+        { question: 'Please _____ your hands before speaking.', options: ['raise', 'raising', 'raises'], answer: 'raise' },
+        { question: '_____ make noise in the library.', options: ['Don\'t', 'Not', 'Doesn\'t'], answer: 'Don\'t' }
+      ]
     },
     reading: {
-      title: 'Our School Morning Schedule',
-      passage: 'At Samaki Primary School, classes start at 7:00 a.m. Students arrive early with their backpacks, pencils, and textbooks. At 7:00, all students stand in front of the flag to sing the National Anthem. At 9:30, they have a short break for healthy snacks and playground games.',
+      title: 'Our Classroom Rules',
+      passage: 'In our Grade 6 classroom, we have golden rules. Rule number one: arrive at school at seven o\'clock. Rule number two: be polite and friendly to all classmates. Rule number three: keep the classroom clean and tidy. Our teacher says when everyone follows the rules, learning is wonderful and exciting.',
       questions: [
-        { question: 'What time do classes start?', options: ['7:00 a.m.', '8:00 a.m.', '6:30 a.m.', '9:30 a.m.'], answer: '7:00 a.m.', explanation: 'Classes start at 7:00 a.m.' },
-        { question: 'What do students do at 7:00 a.m.?', options: ['Sing the National Anthem', 'Eat lunch', 'Go home', 'Play football'], answer: 'Sing the National Anthem', explanation: 'They stand in front of the flag and sing the Anthem.' },
-      ],
+        { question: 'What time must students arrive?', options: ['7 o\'clock', '8 o\'clock', '9 o\'clock'], answer: '7 o\'clock' },
+        { question: 'How should the classroom be kept?', options: ['Clean and tidy', 'Noisy', 'Dark'], answer: 'Clean and tidy' },
+        { question: 'What makes learning wonderful?', options: ['Following rules', 'Sleeping', 'Shouting'], answer: 'Following rules' }
+      ]
     },
     speaking: {
-      instruction: 'អនុវត្តសួរម៉ោង និងសួររកសម្ភារសិក្សាជាមួយមិត្តភក្តិ',
+      instruction: 'Practice asking and answering about time with your partner:',
       modelDialogue: [
-        { speaker: 'A', text: 'What time is it now?', translationKh: 'តើឥឡូវម៉ោងប៉ុន្មានហើយ?' },
-        { speaker: 'B', text: 'It is eight o\'clock sharp.', translationKh: 'ម៉ោង ៨ គត់។' },
+        { speaker: 'Student A', text: 'Excuse me, what time is it?' },
+        { speaker: 'Student B', text: 'It is eight o\'clock. It is time for English!' }
       ],
       prompts: [
-        'សួរមិត្តភក្តិថាតើម៉ោងប៉ុន្មានគាត់មកដល់សាលា',
-        'សុំខ្ចីជ័រលុប ឬបន្ទាត់ពីមិត្តរួមតុ',
-      ],
+        'Ask your friend what time they wake up in the morning.',
+        'Ask what time school finishes in the afternoon.',
+        'Give a polite classroom command: "Please be quiet."'
+      ]
     },
     writing: {
-      instruction: 'បំពេញប្រយោគទាក់ទងនឹងពេលវេលា និងសម្ភារសិក្សា',
-      wordBank: ['ruler', 'o\'clock', 'textbook', 'pencil'],
+      instruction: 'Write classroom rules using the words given:',
+      wordBank: ['Listen', 'Clean', 'Quiet', 'Raise'],
       tasks: [
-        { prompt: 'It is seven _____ in the morning.', answer: 'o\'clock' },
-        { prompt: 'I use a _____ to write in my notebook.', answer: 'pencil' },
-      ],
+        { prompt: '_____ carefully to the teacher.', answer: 'Listen' },
+        { prompt: '_____ your hand to ask a question.', answer: 'Raise' },
+        { prompt: 'Keep the room _____ and quiet.', answer: 'clean' }
+      ]
     },
     remember: {
-      vocabList: ['O\'clock', 'Textbook', 'Ruler', 'Quarter', 'Schedule'],
-      grammarSummary: 'What time is it? It is [time]. Preposition "at" + time (e.g., at 7 o\'clock).',
+      vocabList: ['O\'clock', 'Quiet', 'Listen', 'Ruler', 'Textbook'],
+      grammarSummary: 'What time is it? It is ... o\'clock. / Please + Verb'
     },
-    practiceQuestions: [
-      { question: 'What do you use to write in your notebook?', options: ['Pen', 'Eraser', 'Ruler', 'Backpack'], correctIndex: 0, explanationKh: '"Pen" គឺប៊ិចសម្រាប់សរសេរ។' },
+    dialogueEn: [
+      { speaker: 'Teacher', text: 'Good morning students! Please open your books to page 10.', translationKh: 'អរុណសួស្តីកូនៗ! សូមបើកសៀវភៅទំព័រទី១០។' },
+      { speaker: 'Students', text: 'Good morning teacher! Yes, we are ready.', translationKh: 'អរុណសួស្តីលោកគ្រូ! បាទ/ចាស ពួកយើងរួចរាល់ហើយ។' }
     ],
+    practiceQuestions: [
+      {
+        question: 'What do you use to write in your notebook?',
+        options: ['Pen', 'Eraser', 'Ruler', 'Backpack'],
+        correctIndex: 0,
+        explanationKh: '"Pen" គឺប៊ិចសម្រាប់សរសេរ។'
+      }
+    ]
   },
   {
     id: 3,
     unitNumber: 3,
-    chapterId: 2,
-    chapterTitle: 'Chapter 2: Daily Routines & Hobbies',
-    unitTitle: 'Daily Routines & Activities',
-    titleEn: 'Unit 3: Daily Routines & Activities',
-    titleKh: 'មេរៀនទី៣ ៖ ទម្លាប់ប្រចាំថ្ងៃ និងសកម្មភាព',
-    subtitleKh: 'ការរៀបរាប់ពីសកម្មភាពប្រចាំថ្ងៃពីព្រឹកដល់ល្ងាច',
-    pages: 'ទំព័រ ១៨-២៣',
-    icon: '☀️',
-    grammarFocusEn: 'Present Simple for routines (I wake up, She brushes her teeth)',
-    grammarFocusKh: 'បច្ចុប្បន្នកាលធម្មតាសម្រាប់ទម្លាប់ប្រចាំថ្ងៃ (កិរិយាសព្ទថែម s/es)',
-    spellingWords: ['Morning', 'Brush', 'Breakfast', 'Exercise', 'Shower', 'Homework'],
+    chapterId: 1,
+    chapterTitle: 'Chapter 1: Back to School & Friends',
+    unitTitle: 'My Daily Routines',
+    pages: 'MoEYS p. 10-13',
+    icon: '🏃',
+    titleEn: 'Unit 3: My Daily Routines',
+    titleKh: 'មេរៀនទី៣ ៖ ទម្លាប់ប្រចាំថ្ងៃរបស់ខ្ញុំ',
+    subtitleKh: 'ការពិពណ៌នាអំពីសកម្មភាពប្រចាំថ្ងៃពីព្រឹកដល់យប់',
+    grammarFocusEn: 'Present Simple for routines (I wake up, He wakes up)',
+    grammarFocusKh: 'បច្ចុប្បន្នកាលធម្មតាសម្រាប់ទម្លាប់ប្រចាំថ្ងៃ',
     vocabulary: [
-      { word: 'Routine', phonetic: '/ruːˈtiːn/', partOfSpeech: 'noun', meaningKh: 'ទម្លាប់ប្រចាំថ្ងៃ', exampleSentence: 'My morning routine starts at 6 a.m.', exampleTranslationKh: 'ទម្លាប់ពេលព្រឹករបស់ខ្ញុំចាប់ផ្តើមនៅម៉ោង ៦ ព្រឹក។' },
-      { word: 'Brush', phonetic: '/brʌʃ/', partOfSpeech: 'verb', meaningKh: 'ដុស (ធ្មេញ)', exampleSentence: 'I brush my teeth twice a day.', exampleTranslationKh: 'ខ្ញុំដុសធ្មេញពីរដងក្នុងមួយថ្ងៃ។' },
-      { word: 'Breakfast', phonetic: '/ˈbrekfəst/', partOfSpeech: 'noun', meaningKh: 'អាហារពេលព្រឹក', exampleSentence: 'We eat rice and soup for breakfast.', exampleTranslationKh: 'យើងហូបបាយ និងសម្លសម្រាប់អាហារពេលព្រឹក។' },
-      { word: 'Homework', phonetic: '/ˈhəʊmwɜːk/', partOfSpeech: 'noun', meaningKh: 'កិច្ចការផ្ទះ', exampleSentence: 'I do my homework every evening.', exampleTranslationKh: 'ខ្ញុំធ្វើកិច្ចការផ្ទះរៀងរាល់ល្ងាច។' },
+      {
+        word: 'Wake up',
+        phonetic: '/weɪk ʌp/',
+        pos: 'verb',
+        khmerMeaning: 'ភ្ញាក់ពីគេង',
+        example: 'I wake up at six o\'clock every morning.',
+        icon: '🌅',
+        partOfSpeech: 'verb',
+        meaningKh: 'ភ្ញាក់ពីគេង',
+        exampleSentence: 'I wake up at six o\'clock every morning.',
+        exampleTranslationKh: 'ខ្ញុំភ្ញាក់ពីគេងនៅម៉ោង ៦ ព្រឹកជារៀងរាល់ថ្ងៃ។'
+      },
+      {
+        word: 'Breakfast',
+        phonetic: '/ˈbrekfəst/',
+        pos: 'noun',
+        khmerMeaning: 'អាហារពេលព្រឹក',
+        example: 'We eat healthy breakfast before school.',
+        icon: '🍳',
+        partOfSpeech: 'noun',
+        meaningKh: 'អាហារពេលព្រឹក',
+        exampleSentence: 'We eat healthy breakfast before school.',
+        exampleTranslationKh: 'ពួកយើងញ៉ាំអាហារពេលព្រឹកល្អចំពោះសុខភាពមុនទៅសាលា។'
+      },
+      {
+        word: 'Exercise',
+        phonetic: '/ˈeksəsaɪz/',
+        pos: 'verb/noun',
+        khmerMeaning: 'ហាត់ប្រាណ',
+        example: 'Physical exercise makes our body strong.',
+        icon: '🤸',
+        partOfSpeech: 'verb',
+        meaningKh: 'ហាត់ប្រាណ',
+        exampleSentence: 'Physical exercise makes our body strong.',
+        exampleTranslationKh: 'ការហាត់ប្រាណធ្វើឱ្យរាងកាយយើងរឹងមាំ។'
+      },
+      {
+        word: 'Homework',
+        phonetic: '/ˈhəʊmwɜːk/',
+        pos: 'noun',
+        khmerMeaning: 'កិច្ចការផ្ទះ',
+        example: 'I finish my English homework at night.',
+        icon: '📝',
+        partOfSpeech: 'noun',
+        meaningKh: 'កិច្ចការផ្ទះ',
+        exampleSentence: 'I finish my English homework at night.',
+        exampleTranslationKh: 'ខ្ញុំធ្វើកិច្ចការផ្ទះភាសាអង់គ្លេសចប់នៅពេលយប់។'
+      }
     ],
+    spellingWords: ['Wakeup', 'Breakfast', 'Exercise', 'Homework'],
     conversations: [
       {
-        title: 'Talking about Morning Routines',
+        title: 'Talking about Morning Routine',
         lines: [
-          { speaker: 'Sophea', text: 'What time do you usually wake up, Bopha?', translationKh: 'តើអ្នកតែងតែភ្ញាក់ពីគេងនៅម៉ោងប៉ុន្មាន បុប្ផា?', avatar: '👧' },
-          { speaker: 'Bopha', text: 'I always wake up at 5:30 a.m. Then I wash my face and brush my teeth.', translationKh: 'ខ្ញុំតែងតែភ្ញាក់នៅម៉ោង ៥:៣០ ព្រឹក។ បន្ទាប់មកខ្ញុំលុបមុខ និងដុសធ្មេញ។', avatar: '👩' },
-          { speaker: 'Sophea', text: 'Do you eat breakfast before going to school?', translationKh: 'តើអ្នកញ៉ាំអាហារពេលព្រឹកមុនពេលទៅសាលាទេ?', avatar: '👧' },
-          { speaker: 'Bopha', text: 'Yes, my mother prepares healthy breakfast for me at 6:15.', translationKh: 'ចាស ម្តាយខ្ញុំរៀបចំអាហារពេលព្រឹកឱ្យខ្ញុំនៅម៉ោង ៦:១៥។', avatar: '👩' },
-        ],
-      },
-    ],
-    dialogueEn: [
-      { speaker: 'Sophea', text: 'What time do you usually wake up, Bopha?', translationKh: 'តើអ្នកតែងតែភ្ញាក់ពីគេងនៅម៉ោងប៉ុន្មាន បុប្ផា?' },
-      { speaker: 'Bopha', text: 'I always wake up at 5:30 a.m. Then I wash my face and brush my teeth.', translationKh: 'ខ្ញុំតែងតែភ្ញាក់នៅម៉ោង ៥:៣០ ព្រឹក។ បន្ទាប់មកខ្ញុំលុបមុខ និងដុសធ្មេញ។' },
+          { avatar: '👧', speaker: 'Bopha', text: 'What time do you wake up every morning?', translation: 'តើអ្នកភ្ញាក់ពីគេងនៅម៉ោងប៉ុន្មានរាល់ព្រឹក?' },
+          { avatar: '👦', speaker: 'Vannak', text: 'I wake up at six o\'clock. Then I brush my teeth and eat breakfast.', translation: 'ខ្ញុំភ្ញាក់ពីគេងនៅម៉ោង ៦។ បន្ទាប់មកខ្ញុំដុសធ្មេញ និងញ៉ាំអាហារពេលព្រឹក។' }
+        ]
+      }
     ],
     languageFocus: {
-      grammarTopic: 'Present Simple tense for habitual actions',
-      rule: 'ប្រើកិរិយាសព្ទដើមសម្រាប់ I/You/We/They; ថែម -s ឬ -es លើកិរិយាសព្ទសម្រាប់ He/She/It។',
-      formula: 'I/You/We/They + Verb(base) | He/She/It + Verb(s/es)',
+      grammarTopic: 'Present Simple: Daily Routines (s / es rules)',
+      rule: 'ជាមួយ He / She / It កិរិយាសព្ទត្រូវបន្ថែម s ឬ es (e.g. He wakes up, She brushes)។',
+      formula: 'Subject (He/She) + Verb(-s/-es) + time',
       examples: [
-        { question: 'What do you do in the morning?', answer: 'I wash my face and brush my teeth.', note: 'Subject: I' },
-        { question: 'What does Bopha do?', answer: 'She walks to school every morning.', note: 'Subject: She (walks)' },
+        { question: 'What does Dara do at 6?', answer: 'He wakes up at 6:00 AM.', note: 'wake -> wakes' },
+        { question: 'When do you eat breakfast?', answer: 'I eat breakfast at 6:30 AM.', note: 'I eat' }
       ],
       practiceExercises: [
-        { instruction: 'Choose the correct verb form', prompt: 'Sophea _____ her homework every evening.', options: ['do', 'does', 'doing', 'done'], answer: 'does' },
-        { instruction: 'Choose the correct verb form', prompt: 'We _____ breakfast at 6:30 a.m.', options: ['eat', 'eats', 'eating', 'ate'], answer: 'eat' },
-      ],
+        { question: 'Sophea _____ her teeth every morning.', options: ['brushes', 'brush', 'brushing'], answer: 'brushes' },
+        { question: 'They _____ to school by bicycle.', options: ['ride', 'rides', 'riding'], answer: 'ride' }
+      ]
     },
     reading: {
-      title: 'Bopha\'s Daily Life',
-      passage: 'Bopha is a hardworking Grade 6 student in Battambang. Every weekday, she gets up early. After brushing her teeth and eating breakfast, she rides her bicycle to school. In the afternoon, she helps her parents water the vegetables and feeds the chickens. At night, she reads English storybooks before sleeping.',
+      title: 'Vannak\'s Busy Day',
+      passage: 'Vannak is an active Grade 6 student in Siem Reap. He wakes up at 6:00 AM. After washing his face, he helps his parents feed the chickens. At 6:45 AM, he rides his bicycle to school. After class, he plays football with his friends and reviews his lessons at home.',
       questions: [
-        { question: 'How does Bopha go to school?', options: ['By bicycle', 'On foot', 'By car', 'By boat'], answer: 'By bicycle', explanation: 'She rides her bicycle to school.' },
-        { question: 'What does she do in the afternoon?', options: ['Helps her parents', 'Watches TV', 'Sleeps', 'Plays games'], answer: 'Helps her parents', explanation: 'She helps water vegetables and feed chickens.' },
-      ],
+        { question: 'Where does Vannak live?', options: ['Siem Reap', 'Phnom Penh', 'Battambang'], answer: 'Siem Reap' },
+        { question: 'How does he go to school?', options: ['By bicycle', 'By bus', 'On foot'], answer: 'By bicycle' }
+      ]
     },
     speaking: {
-      instruction: 'រៀបរាប់ពីទម្លាប់ប្រចាំថ្ងៃរបស់អ្នកពីព្រឹកដល់យប់ទៅកាន់មិត្តភក្តិ',
+      instruction: 'Tell your partner 3 things you do every morning:',
       modelDialogue: [
-        { speaker: 'A', text: 'What do you do after school?', translationKh: 'តើអ្នកធ្វើអ្វីបន្ទាប់ពីចេញពីសាលា?' },
-        { speaker: 'B', text: 'I do my homework and play football with my brothers.', translationKh: 'ខ្ញុំធ្វើកិច្ចការផ្ទះ និងលេងបាល់ទាត់ជាមួយបងប្អូន។' },
+        { speaker: 'You', text: 'First, I wake up. Next, I wash my face. Then, I eat breakfast.' }
       ],
-      prompts: [
-        'រៀបរាប់ពីសកម្មភាព ៣ យ៉ាងដែលអ្នកធ្វើរាល់ព្រឹក',
-        'សួរមិត្តភក្តិអំពីម៉ោងចូលគេងរបស់គាត់',
-      ],
+      prompts: ['What do you do first in the morning?', 'What time do you sleep at night?']
     },
     writing: {
-      instruction: 'សរសេរប្រយោគអំពីទម្លាប់ប្រចាំថ្ងៃរបស់អ្នក',
-      wordBank: ['wake up', 'brush', 'study', 'help'],
+      instruction: 'Write the correct form of the verbs:',
+      wordBank: ['wakes', 'goes', 'eats'],
       tasks: [
-        { prompt: 'Every morning, I _____ at 6 o\'clock.', answer: 'wake up' },
-        { prompt: 'In the afternoon, I _____ my parents.', answer: 'help' },
-      ],
+        { prompt: 'Sokha _____ up early.', answer: 'wakes' },
+        { prompt: 'He _____ breakfast with his sister.', answer: 'eats' }
+      ]
     },
     remember: {
-      vocabList: ['Routine', 'Brush', 'Breakfast', 'Homework', 'Exercise'],
-      grammarSummary: 'Present Simple: I/We/They eat vs He/She/It eats.',
-    },
-    practiceQuestions: [
-      { question: 'Complete: "She _____ her teeth twice a day."', options: ['brush', 'brushes', 'brushing', 'brushed'], correctIndex: 1, explanationKh: 'ប្រធាន "She" កិរិយាសព្ទត្រូវថែម "es" (brushes)។' },
-    ],
+      vocabList: ['Wake up', 'Breakfast', 'Exercise', 'Homework'],
+      grammarSummary: 'I/You/We/They eat - He/She/It eats'
+    }
   },
   {
     id: 4,
     unitNumber: 4,
     chapterId: 2,
     chapterTitle: 'Chapter 2: Daily Routines & Hobbies',
-    unitTitle: 'Days of the Week & Schedules',
-    titleEn: 'Unit 4: Days of the Week & Schedules',
-    titleKh: 'មេរៀនទី៤ ៖ ថ្ងៃនៃសប្តាហ៍ និងកាលវិភាគ',
-    subtitleKh: 'ការរៀនឈ្មោះថ្ងៃទាំង ៧ និងការរៀបចំកាលវិភាគសិក្សា',
-    pages: 'ទំព័រ ២៤-២៩',
+    unitTitle: 'Days of the Week & Timetable',
+    pages: 'MoEYS p. 14-17',
     icon: '📅',
-    grammarFocusEn: 'Prepositions of time: ON Monday, IN the afternoon, AT 7:00',
-    grammarFocusKh: 'ការប្រើធ្នាក់ On សម្រាប់ថ្ងៃនៃសប្តាហ៍',
-    spellingWords: ['Monday', 'Wednesday', 'Friday', 'Saturday', 'Sunday', 'Weekend'],
+    titleEn: 'Unit 4: Days of the Week & Timetable',
+    titleKh: 'មេរៀនទី៤ ៖ ថ្ងៃនៃសប្តាហ៍ និងកាលវិភាគ',
+    subtitleKh: 'ការរៀបរាប់ថ្ងៃទាំង ៧ និងមុខវិជ្ជាសិក្សា',
+    grammarFocusEn: 'Prepositions of time (on Monday, at 8:00)',
+    grammarFocusKh: 'ធ្នាក់បញ្ជាក់កាលវេលា on + ថ្ងៃ, at + ម៉ោង',
     vocabulary: [
-      { word: 'Weekday', phonetic: '/ˈwiːkdeɪ/', partOfSpeech: 'noun', meaningKh: 'ថ្ងៃធ្វើការ (ច័ន្ទ-សុក្រ)', exampleSentence: 'We study from Monday to Friday on weekdays.', exampleTranslationKh: 'យើងរៀនពីថ្ងៃច័ន្ទដល់សុក្រនៅថ្ងៃធ្វើការ។' },
-      { word: 'Weekend', phonetic: '/ˌwiːkˈend/', partOfSpeech: 'noun', meaningKh: 'ចុងសប្តាហ៍ (សៅរ៍-អាទិត្យ)', exampleSentence: 'I visit my grandparents on the weekend.', exampleTranslationKh: 'ខ្ញុំទៅលេងជីដូនជីតានៅចុងសប្តាហ៍។' },
-      { word: 'Timetable', phonetic: '/ˈtaɪmteɪbl/', partOfSpeech: 'noun', meaningKh: 'កាលវិភាគម៉ោងរៀន', exampleSentence: 'Our timetable shows English on Wednesday.', exampleTranslationKh: 'កាលវិភាគរបស់យើងបង្ហាញភាសាអង់គ្លេសនៅថ្ងៃពុធ។' },
-      { word: 'Favorite', phonetic: '/ˈfeɪvərɪt/', partOfSpeech: 'adj', meaningKh: 'ដែលចូលចិត្តបំផុត', exampleSentence: 'Science is my favorite subject.', exampleTranslationKh: 'វិទ្យាសាស្ត្រគឺជាមុខវិជ្ជាដែលខ្ញុំចូលចិត្តបំផុត។' },
+      {
+        word: 'Monday',
+        phonetic: '/ˈmʌndeɪ/',
+        pos: 'noun',
+        khmerMeaning: 'ថ្ងៃច័ន្ទ',
+        example: 'We have English on Monday morning.',
+        icon: '🗓️',
+        partOfSpeech: 'noun',
+        meaningKh: 'ថ្ងៃច័ន្ទ',
+        exampleSentence: 'We have English on Monday morning.',
+        exampleTranslationKh: 'ពួកយើងមានរៀនភាសាអង់គ្លេសនៅព្រឹកថ្ងៃច័ន្ទ។'
+      },
+      {
+        word: 'Wednesday',
+        phonetic: '/ˈwenzdeɪ/',
+        pos: 'noun',
+        khmerMeaning: 'ថ្ងៃពុធ',
+        example: 'Wednesday is our science experiment day.',
+        icon: '🧪',
+        partOfSpeech: 'noun',
+        meaningKh: 'ថ្ងៃពុធ',
+        exampleSentence: 'Wednesday is our science experiment day.',
+        exampleTranslationKh: 'ថ្ងៃពុធគឺជាថ្ងៃពិសោធន៍វិទ្យាសាស្ត្ររបស់យើង។'
+      },
+      {
+        word: 'Timetable',
+        phonetic: '/ˈtaɪmteɪbl/',
+        pos: 'noun',
+        khmerMeaning: 'កាលវិភាគសិក្សា',
+        example: 'Check the class timetable on the wall.',
+        icon: '📋',
+        partOfSpeech: 'noun',
+        meaningKh: 'កាលវិភាគសិក្សា',
+        exampleSentence: 'Check the class timetable on the wall.',
+        exampleTranslationKh: 'ពិនិត្យមើលកាលវិភាគថ្នាក់រៀននៅលើជញ្ជាំង។'
+      }
     ],
+    spellingWords: ['Monday', 'Wednesday', 'Timetable', 'Friday'],
     conversations: [
       {
-        title: 'Talking about School Timetable',
+        title: 'Asking about the Timetable',
         lines: [
-          { speaker: 'Sokun', text: 'Do we have English on Monday?', translationKh: 'តើយើងមានរៀនភាសាអង់គ្លេសនៅថ្ងៃច័ន្ទទេ?', avatar: '👦' },
-          { speaker: 'Kosal', text: 'No, we don\'t. We have English on Wednesday and Friday.', translationKh: 'ទេ មិនមានទេ។ យើងមានភាសាអង់គ្លេសនៅថ្ងៃពុធ និងសុក្រ។', avatar: '🧒' },
-          { speaker: 'Sokun', text: 'What is your favorite day of the week?', translationKh: 'តើថ្ងៃណាជាថ្ងៃដែលអ្នកចូលចិត្តជាងគេ?', avatar: '👦' },
-          { speaker: 'Kosal', text: 'My favorite day is Saturday because I can play football!', translationKh: 'ថ្ងៃដែលខ្ញុំចូលចិត្តគឺថ្ងៃសៅរ៍ ព្រោះខ្ញុំអាចលេងបាល់ទាត់បាន!', avatar: '🧒' },
-        ],
-      },
-    ],
-    dialogueEn: [
-      { speaker: 'Sokun', text: 'Do we have English on Monday?', translationKh: 'តើយើងមានរៀនភាសាអង់គ្លេសនៅថ្ងៃច័ន្ទទេ?' },
-      { speaker: 'Kosal', text: 'No, we don\'t. We have English on Wednesday and Friday.', translationKh: 'ទេ មិនមានទេ។ យើងមានភាសាអង់គ្លេសនៅថ្ងៃពុធ និងសុក្រ។' },
+          { avatar: '👦', speaker: 'Dara', text: 'When do we have English class?', translation: 'តើពួកយើងមានរៀនភាសាអង់គ្លេសនៅពេលណា?' },
+          { avatar: '👧', speaker: 'Sreynet', text: 'We have English on Monday and Thursday at eight o\'clock.', translation: 'ពួកយើងមានរៀនភាសាអង់គ្លេសនៅថ្ងៃច័ន្ទ និងថ្ងៃព្រហស្បតិ៍ នៅម៉ោង ៨ គត់។' }
+        ]
+      }
     ],
     languageFocus: {
-      grammarTopic: 'Preposition "ON" with Days of the week',
-      rule: 'ត្រូវប្រើធ្នាក់ "on" ពីមុខថ្ងៃនៃសប្តាហ៍ជានិច្ច (on Monday, on Tuesday, on the weekend)។',
-      formula: 'on + [Day of the week]',
+      grammarTopic: 'Prepositions of Time: ON and AT',
+      rule: 'ប្រើ ON ជាមួយថ្ងៃនៃសប្តាហ៍ (on Monday, on Friday)។ ប្រើ AT ជាមួយម៉ោងជាក់លាក់ (at 7:00, at noon)។',
+      formula: 'on + [Day of week] / at + [Clock time]',
       examples: [
-        { question: 'When do you study English?', answer: 'I study English on Wednesday.', note: 'on + Wednesday' },
-        { question: 'What do you do on Sunday?', answer: 'On Sunday, I visit my relatives.', note: 'on + Sunday' },
+        { question: 'When is English?', answer: 'On Tuesday.', note: 'on + Day' },
+        { question: 'What time is math?', answer: 'At eight o\'clock.', note: 'at + Time' }
       ],
       practiceExercises: [
-        { instruction: 'Choose the correct preposition', prompt: 'We have physical education _____ Thursday.', options: ['on', 'in', 'at', 'to'], answer: 'on' },
-        { instruction: 'Choose the correct day', prompt: 'The day between Tuesday and Thursday is _____.', options: ['Wednesday', 'Monday', 'Friday', 'Saturday'], answer: 'Wednesday' },
-      ],
+        { question: 'We play football _____ Saturday.', options: ['on', 'in', 'at'], answer: 'on' },
+        { question: 'Class begins _____ seven o\'clock.', options: ['at', 'on', 'to'], answer: 'at' }
+      ]
     },
     reading: {
-      title: 'Our Weekly School Schedule',
-      passage: 'Students in Cambodia go to school from Monday to Saturday morning. On Monday, Wednesday, and Friday, they study Khmer Literature, Mathematics, and English. On Tuesday and Thursday, they enjoy Science and Social Studies. On Sunday, schools are closed, and children spend time with their families.',
+      title: 'Grade 6 Weekly Timetable',
+      passage: 'From Monday to Friday, Grade 6 students study Khmer literature, mathematics, science, and English. On Saturday morning, they participate in sports and art activities. Sunday is a restful day to spend with family.',
       questions: [
-        { question: 'Which days do students study English?', options: ['Monday, Wednesday, Friday', 'Tuesday and Thursday', 'Saturday', 'Sunday'], answer: 'Monday, Wednesday, Friday', explanation: 'They study on Monday, Wednesday, and Friday.' },
-        { question: 'Are schools open on Sunday?', options: ['No, schools are closed', 'Yes, full day', 'Only morning', 'Only evening'], answer: 'No, schools are closed', explanation: 'On Sunday, schools are closed.' },
-      ],
+        { question: 'What do students do on Saturday morning?', options: ['Sports and art', 'Math exam', 'Sleep all day'], answer: 'Sports and art' },
+        { question: 'Which day is for family rest?', options: ['Sunday', 'Monday', 'Tuesday'], answer: 'Sunday' }
+      ]
     },
     speaking: {
-      instruction: 'សួរមិត្តភក្តិអំពីថ្ងៃដែលគាត់ចូលចិត្ត និងកាលវិភាគមុខវិជ្ជា',
+      instruction: 'Ask your partner their favorite day of the week:',
       modelDialogue: [
-        { speaker: 'A', text: 'What do you usually do on the weekend?', translationKh: 'តើអ្នកតែងតែធ្វើអ្វីនៅចុងសប្តាហ៍?' },
-        { speaker: 'B', text: 'On Saturday, I help my mom cook lunch.', translationKh: 'នៅថ្ងៃសៅរ៍ ខ្ញុំជួយម៉ាក់ធ្វើម្ហូបថ្ងៃត្រង់។' },
+        { speaker: 'Student A', text: 'What is your favorite day?' },
+        { speaker: 'Student B', text: 'My favorite day is Friday because we have art and English!' }
       ],
-      prompts: [
-        'សួរមិត្តភក្តិថាតើថ្ងៃណាគាត់មានរៀនគណិតវិទ្យា',
-        'ប្រាប់មិត្តភក្តិពីថ្ងៃដែលអ្នកចូលចិត្តបំផុតក្នុងសប្តាហ៍',
-      ],
+      prompts: ['What day is today?', 'What subjects do we have tomorrow?']
     },
     writing: {
-      instruction: 'បំពេញប្រយោគជាមួយឈ្មោះថ្ងៃ និងធ្នាក់ "on"',
-      wordBank: ['on', 'Monday', 'weekend', 'Friday'],
+      instruction: 'Fill in with ON or AT:',
+      wordBank: ['on', 'at'],
       tasks: [
-        { prompt: 'We start our new school week _____ Monday.', answer: 'on' },
-        { prompt: 'I love relaxing on the _____.', answer: 'weekend' },
-      ],
+        { prompt: 'We study science _____ Wednesday.', answer: 'on' },
+        { prompt: 'The bell rings _____ seven o\'clock.', answer: 'at' }
+      ]
     },
     remember: {
-      vocabList: ['Weekday', 'Weekend', 'Timetable', 'Favorite', 'Monday', 'Friday'],
-      grammarSummary: 'Use "on" with days of the week: on Monday, on Friday, on Sunday.',
-    },
-    practiceQuestions: [
-      { question: 'Complete: "I visit my grandparents _____ Sunday."', options: ['on', 'in', 'at', 'with'], correctIndex: 0, explanationKh: 'ត្រូវប្រើធ្នាក់ "on" ពីមុខឈ្មោះថ្ងៃនៃសប្តាហ៍។' },
-    ],
-  },
+      vocabList: ['Monday', 'Wednesday', 'Friday', 'Timetable'],
+      grammarSummary: 'ON Monday, ON Tuesday / AT 7 o\'clock, AT 8 o\'clock'
+    }
+  }
 ];

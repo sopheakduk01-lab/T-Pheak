@@ -242,17 +242,17 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
   // Ensure English Grade 6 40Q Exam, Health Education 40Q Exams, and Math Lessons 1 to 20 40Q Exams are always present in Subject Exams (វិញ្ញាសាតាមមុខវិជ្ជា)
   const effectiveQuizzes = React.useMemo(() => {
-    const list = [...quizzes];
+    const list = [...(quizzes || [])].filter((q): q is Quiz => Boolean(q && typeof q === 'object'));
 
     // 1. Ensure English Grade 6 40-Question Exam is always present
     const english40 = initialQuizzes.find((q) => q.id === 'quiz-english-comprehensive-40q');
-    if (english40 && !list.some((q) => q.id === english40.id || (q.subject === 'ភាសាអង់គ្លេស' && q.questionCount === 40))) {
+    if (english40 && !list.some((q) => q && (q.id === english40.id || (q.subject === 'ភាសាអង់គ្លេស' && q.questionCount === 40)))) {
       list.unshift(english40);
     }
 
     // 2. Ensure Health Education Comprehensive 40-Question Exam is always present
     const health40 = initialQuizzes.find((q) => q.id === 'quiz-health-comprehensive-40q');
-    if (health40 && !list.some((q) => q.id === health40.id || (q.subject === 'អប់រំសុខភាព' && q.questionCount === 40))) {
+    if (health40 && !list.some((q) => q && (q.id === health40.id || (q.subject === 'អប់រំសុខភាព' && q.questionCount === 40)))) {
       list.unshift(health40);
     }
 
@@ -260,7 +260,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
     const healthItems = ALL_HEALTH_LESSONS_PACKAGES.map((p) => p.quizItem);
     for (let i = healthItems.length - 1; i >= 0; i--) {
       const item = healthItems[i];
-      if (!list.some((q) => q.id === item.id || q.title === item.title)) {
+      if (item && !list.some((q) => q && (q.id === item.id || q.title === item.title))) {
         list.unshift(item);
       }
     }
@@ -269,7 +269,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
     const mathItems = getAllMathLessonQuizItems();
     for (let i = mathItems.length - 1; i >= 0; i--) {
       const item = mathItems[i];
-      if (!list.some((q) => q.id === item.id || q.title === item.title)) {
+      if (item && !list.some((q) => q && (q.id === item.id || q.title === item.title))) {
         list.unshift(item);
       }
     }
@@ -285,11 +285,16 @@ export const HomeTab: React.FC<HomeTabProps> = ({
       imageUrl: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=600',
       questions: []
     };
-    if (!list.some((q) => q.id === scienceLesson1Quiz.id || q.title === scienceLesson1Quiz.title)) {
+    if (!list.some((q) => q && (q.id === scienceLesson1Quiz.id || q.title === scienceLesson1Quiz.title))) {
       list.unshift(scienceLesson1Quiz);
     }
 
-    return list;
+    return list.map((q, idx) => ({
+      ...q,
+      id: q.id ? String(q.id) : `quiz-item-${idx}`,
+      title: q.title || 'វិញ្ញាសា',
+      subject: q.subject || 'ទូទៅ'
+    }));
   }, [quizzes]);
 
   const handleLaunchGame = (game: HomeStudyGame) => {
@@ -1491,9 +1496,9 @@ export const HomeTab: React.FC<HomeTabProps> = ({
 
             {/* English Grade 6 Interactive Lesson Cards (MoEYS) */}
             {(selectedSubjectFilter === 'all' || selectedSubjectFilter === 'ភាសាអង់គ្លេស') &&
-              (ENGLISH_GRADE_6_UNITS || []).filter(Boolean).map((unit, uIdx) => (
+              ENGLISH_GRADE_6_UNITS.map((unit, uIdx) => (
                 <div
-                  key={unit?.id ?? uIdx}
+                  key={unit.id}
                   className="min-w-[285px] sm:min-w-[325px] max-w-[325px] bg-white rounded-3xl border border-blue-200/90 overflow-hidden shadow-sm hover:-translate-y-1 transition duration-200 group shrink-0 flex flex-col justify-between"
                 >
                   <div>
@@ -1502,19 +1507,19 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                       <div className="absolute inset-0 bg-blue-950/40" />
                       <div className="absolute top-3 left-3 flex items-center gap-2">
                         <span className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-xl shadow-lg">
-                          {unit?.icon || '🔤'}
+                          {unit.icon || '📘'}
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-lg bg-black/40 backdrop-blur-md text-white border border-white/20 uppercase tracking-wider">
-                          Unit {unit?.unitNumber || uIdx + 1}
+                          Unit {unit.unitNumber}
                         </span>
                       </div>
 
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="font-bold text-white text-sm leading-tight font-moul drop-shadow-md line-clamp-1">
-                          {unit?.unitTitle || unit?.titleEn || `Unit ${unit?.unitNumber || uIdx + 1}`}
+                          {unit.unitTitle || unit.titleEn || unit.titleKh || `Unit ${unit.unitNumber}`}
                         </h3>
                         <p className="text-[10px] text-blue-200 mt-0.5 font-medium drop-shadow-sm">
-                          {unit?.chapterTitle || 'Chapter ' + (unit?.chapterId || 1)} &bull; {unit?.pages || 'ទំព័រ ៦-១៥'}
+                          {unit.chapterTitle || 'English Grade 6'} {unit.pages ? `• ${unit.pages}` : ''}
                         </p>
                       </div>
                     </div>
@@ -1522,7 +1527,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                     {/* Card Body */}
                     <div className="p-4 space-y-3">
                       <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed min-h-[32px]">
-                        {(unit?.languageFocus?.grammarTopic || unit?.grammarFocusKh || unit?.grammarFocusEn || 'Language Focus')} &bull; {(unit?.vocabulary || []).map((v) => v?.word || '').filter(Boolean).slice(0, 4).join(', ')}...
+                        {(unit.languageFocus?.grammarTopic || unit.grammarFocusEn || 'English Grammar')} &bull; {(unit.vocabulary || []).map((v) => v.word).slice(0, 4).join(', ')}...
                       </p>
 
                       <div className="flex items-center gap-1.5 flex-wrap text-[9px] font-bold text-blue-900 bg-blue-50/70 p-2 rounded-xl border border-blue-100">
@@ -1686,15 +1691,19 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                 );
               }
 
-              return filtered.map((quiz) => {
-                const isEnglish = (quiz.subject || '').includes('អង់គ្លេស') || (quiz.subject || '').toLowerCase().includes('english') || quiz.id.includes('english');
-                const isHealth = (quiz.subject || '').includes('សុខភាព') || (quiz.subject || '').toLowerCase().includes('health') || quiz.id.includes('health');
-                const isMathLesson = quiz.id.startsWith('quiz-math-lesson') || (quiz.id.startsWith('quiz-math') && quiz.title.includes('មេរៀន'));
-                const isScienceLesson = quiz.id.includes('science-lesson-1') || quiz.title.includes('ការសម្របខ្លួនរបស់រុក្ខជាតិ');
+              return filtered.map((quiz, qIdx) => {
+                const quizId = String(quiz?.id || `quiz-${qIdx}`);
+                const quizSubject = String(quiz?.subject || '');
+                const quizTitle = String(quiz?.title || '');
+
+                const isEnglish = quizSubject.includes('អង់គ្លេស') || quizSubject.toLowerCase().includes('english') || quizId.includes('english');
+                const isHealth = quizSubject.includes('សុខភាព') || quizSubject.toLowerCase().includes('health') || quizId.includes('health');
+                const isMathLesson = quizId.startsWith('quiz-math-lesson') || (quizId.startsWith('quiz-math') && quizTitle.includes('មេរៀន'));
+                const isScienceLesson = quizId.includes('science-lesson-1') || quizTitle.includes('ការសម្របខ្លួនរបស់រុក្ខជាតិ');
 
                 return (
                   <div
-                    key={quiz.id}
+                    key={quizId}
                     className="min-w-[285px] sm:min-w-[325px] max-w-[325px] bg-white rounded-3xl border border-slate-200/90 overflow-hidden shadow-sm hover:-translate-y-1 transition duration-200 group shrink-0 flex flex-col justify-between"
                   >
                     <div>
@@ -1794,7 +1803,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                               } else if (isEnglish) {
                                 setIsEnglishExamOpen(true);
                               } else if (isHealth) {
-                                const hMatch = quiz.id.match(/health-lesson-(\d+)/i);
+                                const hMatch = quizId.match(/health-lesson-(\d+)/i);
                                 if (hMatch) {
                                   setSelectedHealthLessonNumber(parseInt(hMatch[1]));
                                 } else {
@@ -1802,7 +1811,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({
                                 }
                                 setIsHealthExamOpen(true);
                               } else if (isMathLesson) {
-                                const match = quiz.id.match(/lesson(\d+)/i);
+                                const match = quizId.match(/lesson(\d+)/i);
                                 const lNum = match ? parseInt(match[1]) : 1;
                                 setSelectedMathLessonNumber(lNum);
                                 setIsMathLessonExamOpen(true);

@@ -1134,12 +1134,13 @@ export const StudentPortalView: React.FC<StudentPortalViewProps> = ({
       setIsHealthExamOpen(true);
       return;
     }
-    if (exam.id === 'exam-health-40q' || exam.id.includes('health')) {
+    const examId = String(exam.id || '');
+    if (examId === 'exam-health-40q' || examId.includes('health')) {
       setSelectedHealthExamLesson(0);
       setIsHealthExamOpen(true);
       return;
     }
-    if (exam.id === 'exam-english-40q' || exam.subject === 'english') {
+    if (examId === 'exam-english-40q' || exam.subject === 'english') {
       setIsEnglishExamOpen(true);
       return;
     }

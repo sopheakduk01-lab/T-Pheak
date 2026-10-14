@@ -3040,8 +3040,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           gradeLevel={teacher.grade || '...'}
                           schoolName={teacher.school || ''}
                           teacherName={teacher.name || ''}
-                          students={annualSummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          students={(annualSummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => ({
                               no: idx + 1,
                               studentId: item.student.civilId || item.student.rollNo || item.student.id,
@@ -3050,18 +3050,18 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                               totalScore: Number((item.annualAverage * 10).toFixed(1)),
                               averageScore: item.annualAverage,
                               rank: item.rank,
-                              letter: item.classification.letter,
-                              letterLabel: item.classification.label,
+                              letter: item.classification?.letter || 'F',
+                              letterLabel: item.classification?.label || '',
                               passed: item.passed,
                               resultText: item.passed ? 'ឡើងថ្នាក់' : 'ត្រួតថ្នាក់',
                               honorTitle: item.honorTitle,
                             }))}
-                          totalStudents={annualSummaryData.totalStudents}
-                          femaleStudents={annualSummaryData.femaleStudents}
-                          passedCount={annualSummaryData.passedCount}
-                          failedCount={annualSummaryData.failedCount}
-                          passRate={annualSummaryData.passRate}
-                          classAverage={annualSummaryData.classAverage}
+                          totalStudents={annualSummaryData?.totalStudents || 0}
+                          femaleStudents={annualSummaryData?.femaleStudents || 0}
+                          passedCount={annualSummaryData?.passedCount || 0}
+                          failedCount={annualSummaryData?.failedCount || 0}
+                          passRate={annualSummaryData?.passRate || '0.0'}
+                          classAverage={annualSummaryData?.classAverage || 0}
                           onSwitchToFullView={() => {
                             setGradeViewMode('full');
                             try { localStorage.setItem('school_grade_view_mode', 'full'); } catch {}
@@ -3077,8 +3077,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           gradeLevel={teacher.grade || '...'}
                           schoolName={teacher.school || ''}
                           teacherName={teacher.name || ''}
-                          students={s1SummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          students={(s1SummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => ({
                               no: idx + 1,
                               studentId: item.student.civilId || item.student.rollNo || item.student.id,
@@ -3087,18 +3087,18 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                               totalScore: Number((item.semesterAverage * 10).toFixed(1)),
                               averageScore: item.semesterAverage,
                               rank: item.rank,
-                              letter: item.classification.letter,
-                              letterLabel: item.classification.label,
+                              letter: item.classification?.letter || 'F',
+                              letterLabel: item.classification?.label || '',
                               passed: item.passed,
                               resultText: item.passed ? 'ជាប់' : 'ធ្លាក់',
                               honorTitle: item.rank === 1 ? '🥇 សិស្សឆ្នើម' : item.rank === 2 ? '🥈 លេខ ២' : item.rank === 3 ? '🥉 លេខ ៣' : undefined,
                             }))}
-                          totalStudents={s1SummaryData.totalStudents}
-                          femaleStudents={s1SummaryData.femaleStudents}
-                          passedCount={s1SummaryData.passedCount}
-                          failedCount={s1SummaryData.failedCount}
-                          passRate={s1SummaryData.passRate}
-                          classAverage={s1SummaryData.classAverage}
+                          totalStudents={s1SummaryData?.totalStudents || 0}
+                          femaleStudents={s1SummaryData?.femaleStudents || 0}
+                          passedCount={s1SummaryData?.passedCount || 0}
+                          failedCount={s1SummaryData?.failedCount || 0}
+                          passRate={s1SummaryData?.passRate || '0.0'}
+                          classAverage={s1SummaryData?.classAverage || 0}
                           onSwitchToFullView={() => {
                             setGradeViewMode('full');
                             try { localStorage.setItem('school_grade_view_mode', 'full'); } catch {}
@@ -3114,8 +3114,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           gradeLevel={teacher.grade || '...'}
                           schoolName={teacher.school || ''}
                           teacherName={teacher.name || ''}
-                          students={s2SummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          students={(s2SummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => ({
                               no: idx + 1,
                               studentId: item.student.civilId || item.student.rollNo || item.student.id,
@@ -3124,18 +3124,18 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                               totalScore: Number((item.semesterAverage * 10).toFixed(1)),
                               averageScore: item.semesterAverage,
                               rank: item.rank,
-                              letter: item.classification.letter,
-                              letterLabel: item.classification.label,
+                              letter: item.classification?.letter || 'F',
+                              letterLabel: item.classification?.label || '',
                               passed: item.passed,
                               resultText: item.passed ? 'ជាប់' : 'ធ្លាក់',
                               honorTitle: item.rank === 1 ? '🥇 សិស្សឆ្នើម' : item.rank === 2 ? '🥈 លេខ ២' : item.rank === 3 ? '🥉 លេខ ៣' : undefined,
                             }))}
-                          totalStudents={s2SummaryData.totalStudents}
-                          femaleStudents={s2SummaryData.femaleStudents}
-                          passedCount={s2SummaryData.passedCount}
-                          failedCount={s2SummaryData.failedCount}
-                          passRate={s2SummaryData.passRate}
-                          classAverage={s2SummaryData.classAverage}
+                          totalStudents={s2SummaryData?.totalStudents || 0}
+                          femaleStudents={s2SummaryData?.femaleStudents || 0}
+                          passedCount={s2SummaryData?.passedCount || 0}
+                          failedCount={s2SummaryData?.failedCount || 0}
+                          passRate={s2SummaryData?.passRate || '0.0'}
+                          classAverage={s2SummaryData?.classAverage || 0}
                           onSwitchToFullView={() => {
                             setGradeViewMode('full');
                             try { localStorage.setItem('school_grade_view_mode', 'full'); } catch {}
@@ -3151,8 +3151,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           gradeLevel={teacher.grade || '...'}
                           schoolName={teacher.school || ''}
                           teacherName={teacher.name || ''}
-                          students={singlePeriodSummary.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          students={(singlePeriodSummary?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => ({
                               no: idx + 1,
                               studentId: item.student.civilId || item.student.rollNo || item.student.id,
@@ -3161,18 +3161,18 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                               totalScore: item.total,
                               averageScore: item.average,
                               rank: item.rank,
-                              letter: item.classification.letter,
-                              letterLabel: item.classification.label,
+                              letter: item.classification?.letter || 'F',
+                              letterLabel: item.classification?.label || '',
                               passed: item.passed,
                               resultText: item.passed ? 'ជាប់' : 'ធ្លាក់',
                               honorTitle: item.rank === 1 ? '🥇 សិស្សឆ្នើម' : item.rank === 2 ? '🥈 លេខ ២' : item.rank === 3 ? '🥉 លេខ ៣' : undefined,
                             }))}
-                          totalStudents={singlePeriodSummary.totalStudents}
-                          femaleStudents={singlePeriodSummary.femaleStudents}
-                          passedCount={singlePeriodSummary.passedCount}
-                          failedCount={singlePeriodSummary.failedCount}
-                          passRate={singlePeriodSummary.passRate}
-                          classAverage={singlePeriodSummary.classAverage}
+                          totalStudents={singlePeriodSummary?.totalStudents || 0}
+                          femaleStudents={singlePeriodSummary?.femaleStudents || 0}
+                          passedCount={singlePeriodSummary?.passedCount || 0}
+                          failedCount={singlePeriodSummary?.failedCount || 0}
+                          passRate={singlePeriodSummary?.passRate || '0.0'}
+                          classAverage={singlePeriodSummary?.classAverage || 0}
                           onSwitchToFullView={() => {
                             setGradeViewMode('full');
                             try { localStorage.setItem('school_grade_view_mode', 'full'); } catch {}
@@ -3382,8 +3382,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
-                            {singlePeriodSummary.students
-                              .filter((item) => filterStudent(item.student, item.classification.letter))
+                            {(singlePeriodSummary?.students || [])
+                              .filter((item) => filterStudent(item.student, item.classification?.letter))
                               .map((item, idx) => {
                                 const s = item.student;
                                 const g = item.grade;
@@ -3601,8 +3601,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                          {s1SummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          {(s1SummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => {
                               const s = item.student;
                               const isFemale = s.gender === 'ស្រី';
@@ -3765,8 +3765,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                          {s2SummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          {(s2SummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => {
                               const s = item.student;
                               const isFemale = s.gender === 'ស្រី';
@@ -3945,8 +3945,8 @@ export const AdminTab: React.FC<AdminTabProps> = ({
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                          {annualSummaryData.students
-                            .filter((item) => filterStudent(item.student, item.classification.letter))
+                          {(annualSummaryData?.students || [])
+                            .filter((item) => filterStudent(item.student, item.classification?.letter))
                             .map((item, idx) => {
                               const s = item.student;
                               const isFemale = s.gender === 'ស្រី';
@@ -8135,7 +8135,7 @@ export const AdminTab: React.FC<AdminTabProps> = ({
             </tr>
           `;
 
-          tableRowsHtml = annData.students.map((item, idx) => {
+          tableRowsHtml = (annData?.students || []).map((item, idx) => {
             const s = item.student;
             return `
               <tr style="border-bottom: 1px solid #cbd5e1; ${idx % 2 === 1 ? 'background-color: #fafbfc;' : ''}">
@@ -8174,7 +8174,7 @@ export const AdminTab: React.FC<AdminTabProps> = ({
             </tr>
           `;
 
-          tableRowsHtml = s1Data.students.map((item, idx) => {
+          tableRowsHtml = (s1Data?.students || []).map((item, idx) => {
             const s = item.student;
             return `
               <tr style="border-bottom: 1px solid #cbd5e1; ${idx % 2 === 1 ? 'background-color: #fafbfc;' : ''}">
@@ -8212,7 +8212,7 @@ export const AdminTab: React.FC<AdminTabProps> = ({
             </tr>
           `;
 
-          tableRowsHtml = s2Data.students.map((item, idx) => {
+          tableRowsHtml = (s2Data?.students || []).map((item, idx) => {
             const s = item.student;
             return `
               <tr style="border-bottom: 1px solid #cbd5e1; ${idx % 2 === 1 ? 'background-color: #fafbfc;' : ''}">
@@ -8251,7 +8251,7 @@ export const AdminTab: React.FC<AdminTabProps> = ({
             </tr>
           `;
 
-          tableRowsHtml = singleData.students.map((item, idx) => {
+          tableRowsHtml = (singleData?.students || []).map((item, idx) => {
             const s = item.student;
             const g = item.grade;
             return `
